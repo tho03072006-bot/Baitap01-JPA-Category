@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+             https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <!-- Ten "dataSource" lay dung theo slide 07_JPA_Servlet.pdf (trang 30-31) cua GVHD:
+         trong code Java se goi Persistence.createEntityManagerFactory("dataSource")
+         nen ten o day PHAI khop 100% voi chuoi truyen vao ben Java. -->
+    <persistence-unit name="dataSource">
+
+        <!-- Da ke thua/chuyen doi 2 model tu project bt2-servlet-jsp (edu.hcmute.webpr.model)
+             sang thanh JPA Entity trong package bt02.vn.entity cua project nay.
+             Moi khi tao them Entity moi thi them 1 dong <class> nua vao day. -->
+        <class>bt02.vn.entity.Category</class>
+        <class>bt02.vn.entity.AppUser</class>
+
+        <properties>
+            <!-- ================= THONG TIN KET NOI SQL SERVER =================
+                 Dung CHUNG 1 SQL Server instance/database "webst2" voi bt2-servlet-jsp
+                 (cho tien, khoi tao them 1 database moi tren may em), NHUNG Baitap02 la
+                 bai lam DOC LAP - tat ca bang Entity cua Baitap02 (Category -> "categories",
+                 AppUser -> "users") deu la BANG MOI, KHONG dung chung/dung tro voi bang
+                 "Category"/"AppUser" cu cua bt2-servlet-jsp. -->
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:sqlserver://localhost:1433;databaseName=webst2;encrypt=true;trustServerCertificate=true" />
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+            <property name="jakarta.persistence.jdbc.user" value="sa" />
+            <property name="jakarta.persistence.jdbc.password" value="123456789" />
+
+            <!-- ================= CAU HINH HIBERNATE ================= -->
+            <!-- In cau lenh SQL ra console + format cho de doc -> phuc vu debug khi hoc -->
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+
+            <!-- hbm2ddl.auto quyet dinh Hibernate lam gi voi schema luc khoi dong:
+                 - "validate": chi kiem tra bang/cot co khop Entity khong, KHONG doi gi ca (an toan nhat)
+                 - "update"  : tu tao bang con thieu / them cot con thieu (tien loi luc dang hoc, code moi) <- dang dung, giong slide
+                 - "create"  : XOA het va tao lai tu dau moi lan chay (mat du lieu -> can than!)
+                 Cac Entity cua Baitap02 anh xa toi bang MOI hoan toan ("categories", "users" -
+                 chu thuong, khac ten voi "Category"/"AppUser" cu cua bt2-servlet-jsp) nen Hibernate
+                 se KHONG dong gi den du lieu cu, chi tao them 2 bang moi nay. -->
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+
+            <!-- Dialect = "phuong ngu" SQL rieng cua SQL Server, giup Hibernate sinh dung cau lenh SQL.
+                 Dung dung class trong slide trang 28 (SQLServer2012Dialect). Luu y: tu Hibernate 6,
+                 class nay bi danh dau @Deprecated (Hibernate khuyen nen bo qua thuoc tinh nay va de
+                 no tu nhan dien qua ket noi JDBC), nhung van con hoat dong binh thuong, chi in ra
+                 1 dong canh bao (warning) trong console luc khoi dong, KHONG phai loi. -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2012Dialect" />
+        </properties>
+    </persistence-unit>
+</persistence>
