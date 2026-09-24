@@ -46,6 +46,7 @@
         }
         .sidebar a.menu-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
         .sidebar a.menu-item.active { background: #0d6efd; color: #fff; }
+        .sidebar .menu-divider { border-top: 1px solid rgba(255,255,255,0.12); margin: 10px 20px; }
         .main-area { margin-left: 220px; min-height: 100vh; }
         .topbar {
             background: #fff;
@@ -57,6 +58,9 @@
         }
         .topbar .hello { font-size: 14px; color: #333; }
         .topbar .hello b { color: #1a1a2e; }
+        .topbar .links { display: flex; align-items: center; gap: 14px; }
+        .topbar a.view-site { color: #0d6efd; text-decoration: none; font-size: 13px; font-weight: 600; }
+        .topbar a.view-site:hover { text-decoration: underline; }
         .topbar a.logout {
             background: #dc3545;
             color: #fff;
@@ -79,11 +83,18 @@
                href="${pageContext.request.contextPath}/admin/home">&#127968;&nbsp; Dashboard</a>
             <a class="menu-item ${param.activeMenu == 'category' ? 'active' : ''}"
                href="${pageContext.request.contextPath}/admin/categories">&#128193;&nbsp; Quản lý Danh mục</a>
+            <a class="menu-item ${param.activeMenu == 'product' ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/admin/products">&#128230;&nbsp; Quản lý Sản phẩm</a>
+            <div class="menu-divider"></div>
+            <a class="menu-item" href="${pageContext.request.contextPath}/">&#127760;&nbsp; Xem trang khách</a>
         </nav>
     </div>
     <div class="main-area">
         <div class="topbar">
             <span class="hello">Xin chào, <b><c:out value="${sessionScope.username}"/></b></span>
-            <a class="logout" href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
+            <div class="links">
+                <a class="view-site" href="${pageContext.request.contextPath}/" target="_blank">Xem trang khách &#8599;</a>
+                <a class="logout" href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
+            </div>
         </div>
         <div class="content">

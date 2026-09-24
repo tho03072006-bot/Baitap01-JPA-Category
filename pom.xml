@@ -75,6 +75,22 @@
             <version>13.4.0.jre11</version>
         </dependency>
 
+        <!-- Jakarta Mail - dung de gui email OTP (kich hoat tai khoan + quen mat khau).
+             "com.sun.mail:jakarta.mail" la ban da dong goi san CA API lan phan cai dat
+             (implementation) trong 1 jar duy nhat, khong can khai bao rieng them
+             jakarta.mail-api nua - don gian hoa cho sinh vien khong can hieu sau ve
+             kien truc JavaMail luc nay. -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>jakarta.activation</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
         <!-- KHONG dung Lombok (theo yeu cau GVHD bo qua @Data/@NoArgsConstructor/
              @AllArgsConstructor) - Category.java tu viet tay constructor + getter/setter. -->
     </dependencies>

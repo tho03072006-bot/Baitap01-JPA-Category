@@ -6,7 +6,7 @@
 </jsp:include>
 
 <style>
-    .stat-cards { display: flex; gap: 20px; margin-bottom: 24px; }
+    .stat-cards { display: flex; gap: 20px; margin-bottom: 24px; flex-wrap: wrap; }
     .stat-card {
         background: #fff; border-radius: 10px; padding: 22px 26px;
         box-shadow: 0 4px 16px rgba(0,0,0,0.06); min-width: 220px;
@@ -22,7 +22,7 @@
 </style>
 
 <h1 style="margin:0 0 6px; color:#1a1a2e; font-size:22px;">Dashboard</h1>
-<p style="color:#666; font-size:14px; margin:0 0 24px;">Tổng quan Bài tập 01 &ndash; CRUD Category bằng JPA/Hibernate.</p>
+<p style="color:#666; font-size:14px; margin:0 0 24px;">Tổng quan Bài tập 01-03 &ndash; CRUD Category/Products bằng JPA/Hibernate + đăng ký OTP.</p>
 
 <div class="stat-cards">
     <div class="stat-card">
@@ -30,6 +30,13 @@
         <div>
             <div class="num"><c:out value="${totalCategory}"/></div>
             <div class="label">Danh mục (Category)</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="icon">&#128230;</div>
+        <div>
+            <div class="num"><c:out value="${totalProduct}"/></div>
+            <div class="label">Sản phẩm (Product)</div>
         </div>
     </div>
 </div>

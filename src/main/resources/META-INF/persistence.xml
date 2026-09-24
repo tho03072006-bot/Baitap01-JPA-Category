@@ -15,6 +15,8 @@
              Moi khi tao them Entity moi thi them 1 dong <class> nua vao day. -->
         <class>bt02.vn.entity.Category</class>
         <class>bt02.vn.entity.AppUser</class>
+        <!-- (Bai tap 03) Entity moi cho bang "products", quan he N-1 voi Category. -->
+        <class>bt02.vn.entity.Product</class>
 
         <properties>
             <!-- ================= THONG TIN KET NOI SQL SERVER =================
@@ -39,9 +41,12 @@
                  - "validate": chi kiem tra bang/cot co khop Entity khong, KHONG doi gi ca (an toan nhat)
                  - "update"  : tu tao bang con thieu / them cot con thieu (tien loi luc dang hoc, code moi) <- dang dung, giong slide
                  - "create"  : XOA het va tao lai tu dau moi lan chay (mat du lieu -> can than!)
-                 Cac Entity cua Baitap02 anh xa toi bang MOI hoan toan ("categories", "users" -
-                 chu thuong, khac ten voi "Category"/"AppUser" cu cua bt2-servlet-jsp) nen Hibernate
-                 se KHONG dong gi den du lieu cu, chi tao them 2 bang moi nay. -->
+                 Cac Entity cua Baitap02 anh xa toi bang MOI hoan toan ("categories", "users",
+                 "products" - chu thuong, khac ten voi "Category"/"AppUser" cu cua bt2-servlet-jsp)
+                 nen Hibernate se KHONG dong gi den du lieu cu, chi tao them bang moi con thieu.
+                 LUU Y (da tung gap voi "categories"): neu Hibernate KHONG tu tao duoc bang moi
+                 ("Invalid object name ..."), chay tay script tuong ung trong thu muc database/
+                 bang SSMS. -->
             <property name="hibernate.hbm2ddl.auto" value="update" />
 
             <!-- Dialect = "phuong ngu" SQL rieng cua SQL Server, giup Hibernate sinh dung cau lenh SQL.

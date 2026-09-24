@@ -4,7 +4,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Đăng nhập - Bài tập 01 (JPA)</title>
+    <title>Đăng nhập - Bài tập 02/03 (JPA)</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -95,15 +95,45 @@
             font-size: 13px;
             text-align: center;
         }
+        .success {
+            margin-bottom: 16px;
+            padding: 10px;
+            background: #e7f6ec;
+            border: 1px solid #b7e4c7;
+            color: #1e7e34;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+        }
+        .links {
+            margin-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        .links a { color: #0d6efd; text-decoration: none; }
+        .links a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>Đăng nhập</h1>
-        <p class="subtitle">Bài tập 01 &ndash; CRUD Category (JPA/Hibernate)</p>
+        <p class="subtitle">Bài tập 02/03 &ndash; JPA/Hibernate + OTP email</p>
 
         <c:if test="${not empty loginError}">
-            <div class="error"><c:out value="${loginError}"/></div>
+            <div class="error">
+                <c:out value="${loginError}"/>
+                <c:if test="${not empty unverifiedUsername}">
+                    <br>
+                    <a href="${pageContext.request.contextPath}/verify-otp?username=${unverifiedUsername}">Xác thực OTP ngay</a>
+                </c:if>
+            </div>
+        </c:if>
+        <c:if test="${param.verified == '1'}">
+            <div class="success">Kích hoạt tài khoản thành công! Bạn có thể đăng nhập ngay.</div>
+        </c:if>
+        <c:if test="${param.resetSuccess == '1'}">
+            <div class="success">Đổi mật khẩu thành công! Vui lòng đăng nhập bằng mật khẩu mới.</div>
         </c:if>
 
         <form action="${pageContext.request.contextPath}/login" method="post">
@@ -122,7 +152,12 @@
             <button type="submit">Đăng nhập</button>
         </form>
 
-        <div class="demo">Tài khoản demo: <b>admin / 123456</b></div>
+        <div class="links">
+            <a href="${pageContext.request.contextPath}/register">Đăng ký tài khoản</a>
+            <a href="${pageContext.request.contextPath}/forgot-password">Quên mật khẩu?</a>
+        </div>
+
+        <div class="demo">Tài khoản demo quản trị: <b>admin / 123456</b></div>
     </div>
 </body>
 </html>

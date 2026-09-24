@@ -1,5 +1,8 @@
 package bt02.vn.entity;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,17 +19,23 @@ import jakarta.validation.constraints.NotNull;
  * LAI HOAN TOAN bang JPA, giong het cach lam voi Category/categories
  * truoc do (bang "categories" cung la bang moi, tach biet voi "Category").
  *
- * Ten cot van giu nguyen kieu snake/lowercase quen thuoc, nhung ten BANG
- * doi thanh "users" (chu thuong, giong tinh than dat ten "categories")
- * de KHONG bi trung/dung chung voi bang "AppUser" cua project khac.
- *
- * Neu Hibernate (hibernate.hbm2ddl.auto=update) khong tu tao bang nay khi
- * chay lan dau (da tung gap voi bang "categories"), chay tay script
- * database/users.sql (co san du lieu seed: tai khoan admin/123456).
+ * (Bai tap 03) THEM 4 FIELD MOI phuc vu dang ky + kich hoat tai khoan
+ * bang OTP qua email, va quen mat khau bang OTP qua email:
+ *   - enabled   : 0 = tai khoan MOI dang ky, CHUA xac thuc OTP (chua duoc
+ *                 phep dang nhap) | 1 = da kich hoat (hoac la tai khoan
+ *                 cu tao truoc khi co tinh nang nay, xem database/users.sql).
+ *   - otpCode   : ma OTP 6 chu so dang cho xac nhan gan nhat (dung chung
+ *                 cho ca dang ky lan quen mat khau, vi 1 nguoi dung khong
+ *                 the lam 2 viec nay CUNG LUC).
+ *   - otpExpiry : thoi diem ma OTP tren HET HAN (xem Constants.OTP_EXPIRY_MINUTES).
+ *   - otpPurpose: OTP nay dung de lam gi - "REGISTER" (kich hoat tai khoan
+ *                 moi) hay "RESET" (quen mat khau) - xem Constants.OTP_PURPOSE_*.
  */
 @Entity
 @Table(name = "users")
-public class AppUser {
+public class AppUser implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +63,24 @@ public class AppUser {
     // nay co gia tri mac dinh, giong cach lam voi Category.status truoc do.
     @Column(name = "roleid", nullable = false, columnDefinition = "int not null default 5")
     private int roleid;
+
+    // 0 = chua kich hoat (moi dang ky, dang cho xac thuc OTP), 1 = da kich hoat.
+    // LUU Y: Java default cua "int" la 0 nhung DB dat DEFAULT 1 (de cac tai
+    // khoan CU - tao truoc khi co tinh nang nay - tu dong duoc coi la da
+    // kich hoat khi ALTER TABLE, xem database/users.sql). Tai khoan MOI dang
+    // ky luon duoc code (AuthServiceImpl.register) SET TAY enabled = 0, khong
+    // phu thuoc vao DEFAULT cua DB.
+    @Column(name = "enabled", nullable = false, columnDefinition = "int not null default 1")
+    private int enabled;
+
+    @Column(name = "otp_code", columnDefinition = "nvarchar(10) null")
+    private String otpCode;
+
+    @Column(name = "otp_expiry", columnDefinition = "datetime2 null")
+    private LocalDateTime otpExpiry;
+
+    @Column(name = "otp_purpose", columnDefinition = "nvarchar(20) null")
+    private String otpPurpose;
 
     public AppUser() {
     }
@@ -116,5 +143,37 @@ public class AppUser {
 
     public void setRoleid(int roleid) {
         this.roleid = roleid;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getOtpCode() {
+        return otpCode;
+    }
+
+    public void setOtpCode(String otpCode) {
+        this.otpCode = otpCode;
+    }
+
+    public LocalDateTime getOtpExpiry() {
+        return otpExpiry;
+    }
+
+    public void setOtpExpiry(LocalDateTime otpExpiry) {
+        this.otpExpiry = otpExpiry;
+    }
+
+    public String getOtpPurpose() {
+        return otpPurpose;
+    }
+
+    public void setOtpPurpose(String otpPurpose) {
+        this.otpPurpose = otpPurpose;
     }
 }

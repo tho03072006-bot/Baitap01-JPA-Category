@@ -18,6 +18,12 @@ public class Constants {
     public static final String DIR = "D:\\WEB\\uploads\\Baitap02\\categories";
 
     /**
+     * Thu muc rieng luu anh Products upload len (them cho bai Products,
+     * TACH BIET voi thu muc anh Category o tren de khong bi lan/de anh).
+     */
+    public static final String PRODUCT_DIR = "D:\\WEB\\uploads\\Baitap02\\products";
+
+    /**
      * Ten Cookie dung cho chuc nang "Ghi nho dang nhap" - giong het
      * AppConfig.COOKIE_REMEMBER_USERNAME ben bt2-servlet-jsp.
      */
@@ -31,4 +37,15 @@ public class Constants {
      */
     public static final int ROLE_ADMIN = 1;
     public static final int ROLE_USER = 5;
+
+    /**
+     * Thoi gian hieu luc cua 1 ma OTP (dang ky tai khoan / quen mat khau),
+     * tinh bang PHUT. Qua thoi gian nay ma OTP cu se khong con dung duoc
+     * nua, nguoi dung phai bam "Gui lai OTP" de lay ma moi.
+     */
+    public static final int OTP_EXPIRY_MINUTES = 10;
+
+    /** Danh dau muc dich cua 1 ma OTP dang cho xac nhan - dung cho AppUser.otpPurpose. */
+    public static final String OTP_PURPOSE_REGISTER = "REGISTER";
+    public static final String OTP_PURPOSE_RESET = "RESET";
 }

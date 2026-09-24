@@ -14,11 +14,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * ImageServlet: "phat" lai anh Category da upload, qua URL dang
- * /image?fname=xxx.png. Can Servlet rieng vi anh duoc luu o Constants.DIR -
- * mot thu muc NAM NGOAI webapp nen trinh duyet khong the truy cap truc
- * tiep bang URL tinh duoc (giong cach lam cua ImageServlet ben
- * bt2-servlet-jsp).
+ * ImageServlet: "phat" lai anh da upload, qua URL dang
+ * /image?fname=xxx.png (mac dinh - anh Category, GIU NGUYEN hanh vi cu de
+ * khong pha vo cac cho da dung truoc do) hoac /image?fname=xxx.png&type=product
+ * (anh Product, THEM MOI cho Bai tap 03). Can Servlet rieng vi anh duoc
+ * luu o Constants.DIR/Constants.PRODUCT_DIR - nam NGOAI thu muc webapp
+ * nen trinh duyet khong the truy cap truc tiep bang URL tinh duoc.
  */
 @WebServlet(urlPatterns = { "/image" })
 public class ImageServlet extends HttpServlet {
@@ -35,7 +36,14 @@ public class ImageServlet extends HttpServlet {
             return;
         }
 
-        File file = new File(Constants.DIR + File.separator + fileName);
+        // "type=product" -> doc trong thu muc anh Product; con lai (khong
+        // truyen, hoac bat ky gia tri nao khac) -> giu hanh vi CU, doc trong
+        // thu muc anh Category, de khong lam hong cac URL <img> da sinh ra
+        // tu truoc (category-list.jsp, category-edit.jsp...).
+        String type = req.getParameter("type");
+        String baseDir = "product".equals(type) ? Constants.PRODUCT_DIR : Constants.DIR;
+
+        File file = new File(baseDir + File.separator + fileName);
         if (!file.exists()) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;

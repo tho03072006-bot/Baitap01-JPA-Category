@@ -4,3 +4,8 @@ target/
 Thumbs.db
 *.tar.gz
 _check.tar.gz
+
+# Thong tin tai khoan email that (Gmail + App Password) dung de gui OTP -
+# KHONG duoc push len GitHub. File .example ben canh van duoc commit binh
+# thuong de biet can dien gi khi clone qua may khac.
+src/main/resources/mail-secrets.properties
