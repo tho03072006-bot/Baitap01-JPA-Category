@@ -33,6 +33,20 @@ BEGIN
 END
 GO
 
+-- Bảng products đã có từ bài trước có thể dùng CreatedAt thay vì CreatedDate.
+-- Thêm cột mới và giữ nguyên thời điểm tạo của dữ liệu cũ.
+IF COL_LENGTH('dbo.products', 'CreatedDate') IS NULL
+BEGIN
+    ALTER TABLE dbo.products ADD CreatedDate DATETIME2 NOT NULL
+        CONSTRAINT DF_products_CreatedDate DEFAULT GETDATE();
+
+    IF COL_LENGTH('dbo.products', 'CreatedAt') IS NOT NULL
+    BEGIN
+        EXEC(N'UPDATE dbo.products SET CreatedDate = CreatedAt');
+    END
+END
+GO
+
 -- Vai san pham mau de test ngay "10 san pham moi nhat" o trang chu va
 -- phan trang o /product khi vua deploy xong (chi insert neu bang dang
 -- rong VA da co it nhat 1 categories de gan khoa ngoai vao).
