@@ -47,6 +47,36 @@ BEGIN
 END
 GO
 
+-- Bảng cũ có thể lưu Price bằng BIGINT; đồng bộ kiểu FLOAT với entity Product.
+-- Bỏ ràng buộc mặc định cũ trước khi đổi kiểu, rồi tạo lại để giữ giá trị mặc định.
+IF EXISTS (
+    SELECT 1
+    FROM sys.columns c
+    JOIN sys.types t ON c.user_type_id = t.user_type_id
+    WHERE c.object_id = OBJECT_ID('dbo.products')
+      AND c.name = 'Price'
+      AND t.name <> 'float'
+)
+BEGIN
+    DECLARE @priceDefault SYSNAME;
+    SELECT @priceDefault = dc.name
+    FROM sys.default_constraints dc
+    JOIN sys.columns c ON dc.parent_object_id = c.object_id
+                      AND dc.parent_column_id = c.column_id
+    WHERE c.object_id = OBJECT_ID('dbo.products') AND c.name = 'Price';
+
+    IF @priceDefault IS NOT NULL
+    BEGIN
+        DECLARE @dropPriceDefault NVARCHAR(MAX);
+        SET @dropPriceDefault = N'ALTER TABLE dbo.products DROP CONSTRAINT ' + QUOTENAME(@priceDefault);
+        EXEC(@dropPriceDefault);
+    END
+
+    ALTER TABLE dbo.products ALTER COLUMN Price FLOAT NOT NULL;
+    ALTER TABLE dbo.products ADD CONSTRAINT DF_products_Price DEFAULT 0 FOR Price;
+END
+GO
+
 -- Vai san pham mau de test ngay "10 san pham moi nhat" o trang chu va
 -- phan trang o /product khi vua deploy xong (chi insert neu bang dang
 -- rong VA da co it nhat 1 categories de gan khoa ngoai vao).
